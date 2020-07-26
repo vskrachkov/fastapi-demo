@@ -7,7 +7,12 @@ from api.users.schemas import User, Organization
 users = APIRouter()
 
 
-@users.api_route("/", methods=["get"], response_model=List[User])
+@users.api_route(
+    "/",
+    methods=["get"],
+    response_model=List[User],
+    description="Return users with all applied filters",
+)
 async def get_users(
     limit: int = 2,
     search: Optional[str] = Query(None, max_length=10),

@@ -1,0 +1,11 @@
+.idea
+appserver/server_settings.py
+.vscode
+.vagrant
+*.pyc
+.venv
+venv*
+.env
+__pycache__
+.mypy_cache
+deployment/env.local

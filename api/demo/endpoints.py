@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from fastapi import Header, APIRouter
+from fastapi import Header, APIRouter, status
 
 from api.demo.schemas import Number
 
@@ -31,6 +31,10 @@ async def get_files(file_path: Path):
     }
 
 
-@demo.api_route("/read_accept_language", methods=["get"])
+@demo.api_route(
+    "/read_accept_language",
+    methods=["get"],
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 async def read_accept_language(accept_language: str = Header(...)):
     pass

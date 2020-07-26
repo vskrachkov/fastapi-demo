@@ -1,10 +1,13 @@
 from typing import Optional, List
 
-from fastapi import Query, Path
+from fastapi import Query, Path, APIRouter
 
 from api.users.schemas import User, Organization
 
+users = APIRouter()
 
+
+@users.api_route("/", methods=["get"])
 async def get_users(
     limit: int = 2,
     search: Optional[str] = Query(None, max_length=10),
@@ -31,25 +34,28 @@ async def get_users(
     return response
 
 
+@users.api_route("/", methods=["post"])
 async def create_user(user: User) -> User:
     return user
 
 
+@users.api_route("/{user_id:int}", methods=["put"])
 async def replace_user(user_id: int, user: User) -> User:
     return user
 
 
+@users.api_route("/organization_users/{organization}", methods=["get"])
 async def get_organization_users(
     organization: Organization = Path(..., title="The ID of the item to get"),
     search: Optional[str] = None,
 ):
-    users = {
+    all_users = {
         "google": ({"name": "Karl"},),
         "apple": ({"name": "Linda"},),
         "super": ({"name": "Olenka"}, {"name": "Slavko"}),
     }
 
-    response = users[organization.value]
+    response = all_users[organization.value]
     if search:
         response = list(filter(lambda u: search in u["name"], response))
 

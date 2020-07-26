@@ -16,7 +16,8 @@ app = FastAPI(
 app.add_exception_handler(Exception, server_error_handler)
 app.add_exception_handler(HTTPException, http_exception_handler)
 
-app.include_router(users, prefix="/users")
-app.include_router(demo, prefix="/demo")
+app.include_router(users, prefix="/users", tags=["users"])
+app.include_router(demo, prefix="/demo", tags=["demo"])
 
-uvicorn.run(app)
+if __name__ == '__main__':
+    uvicorn.run(app)

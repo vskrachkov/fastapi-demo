@@ -7,12 +7,12 @@ from api.users.schemas import User, Organization
 users = APIRouter()
 
 
-@users.api_route("/", methods=["get"])
+@users.api_route("/", methods=["get"], response_model=List[User])
 async def get_users(
     limit: int = 2,
     search: Optional[str] = Query(None, max_length=10),
     age_filter: Optional[List[int]] = Query(None, alias="age"),
-):
+) -> List[dict]:
     all_users = (
         {"name": "Karl", "age": 13},
         {"name": "Linda", "age": 14},
@@ -34,21 +34,23 @@ async def get_users(
     return response
 
 
-@users.api_route("/", methods=["post"])
+@users.api_route("/", methods=["post"], response_model=User)
 async def create_user(user: User) -> User:
     return user
 
 
-@users.api_route("/{user_id:int}", methods=["put"])
+@users.api_route("/{user_id:int}", methods=["put"], response_model=User)
 async def replace_user(user_id: int, user: User) -> User:
     return user
 
 
-@users.api_route("/organization_users/{organization}", methods=["get"])
+@users.api_route(
+    "/organization_users/{organization}", methods=["get"], response_model=List[User]
+)
 async def get_organization_users(
     organization: Organization = Path(..., title="The ID of the item to get"),
     search: Optional[str] = None,
-):
+) -> List[dict]:
     all_users = {
         "google": ({"name": "Karl"},),
         "apple": ({"name": "Linda"},),
